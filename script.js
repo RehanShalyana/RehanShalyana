@@ -5,6 +5,7 @@
   'use strict';
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
@@ -118,7 +119,6 @@
 
   /* ---------- portrait tilt (desktop pointer only) ---------- */
   const portrait = $('#portrait');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (portrait && finePointer && !reduceMotion) {
     const hero = portrait.closest('.hero');
     hero.addEventListener('pointermove', (e) => {
@@ -131,6 +131,16 @@
     hero.addEventListener('pointerleave', () => {
       portrait.style.setProperty('--ry', '0deg');
       portrait.style.setProperty('--rx', '0deg');
+    });
+  }
+  /* ---------- cursor spotlight on cards ---------- */
+  if (finePointer && !reduceMotion) {
+    $$('.spot').forEach((card) => {
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
     });
   }
 })();
