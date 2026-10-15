@@ -141,10 +141,9 @@ h1, h2, h3, p { margin: 0; }
 .hero__cta { animation-delay: .65s; }
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* portrait */
-.hero__visual { display: grid; place-items: center; }
+/* portrait: circle backdrop, person pops out of the top */
 .portrait {
-  position: relative; width: min(100%, 380px); aspect-ratio: 1 / 1;
+  position: relative; width: min(100%, 400px); aspect-ratio: 1 / 1; margin-top: 8.5rem;
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform .25s ease-out;
   opacity: 0; animation: fadeIn 1s .35s var(--ease) forwards;
@@ -153,11 +152,19 @@ h1, h2, h3, p { margin: 0; }
   position: absolute; inset: 0; border-radius: 50%;
   border: 2px solid var(--orange); transform: translate(14px, 14px);
 }
-.portrait__frame {
-  position: absolute; inset: 0; overflow: hidden;
-  border-radius: 50%; background: var(--blue);
+.portrait__bg {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #3B86FF 0%, var(--blue) 55%, #0F4FD6 100%);
 }
-.portrait__frame img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+/* the clip box extends above the circle but keeps a round bottom */
+.portrait__person {
+  position: absolute; inset: 0;
+  clip-path: inset(-60% -4% 0 -4% round 0 0 999px 999px);
+}
+.portrait__person img {
+  position: absolute; bottom: 0; left: 50%; width: 64%; height: auto;
+  transform: translateX(-50%);
+}
 
 .float {
   position: absolute; padding: .5rem 1rem; border-radius: 999px;
@@ -165,8 +172,8 @@ h1, h2, h3, p { margin: 0; }
   box-shadow: 0 12px 30px -10px rgba(15, 27, 51, .35);
   animation: bob 5s ease-in-out infinite;
 }
-.float--a { top: 12%; left: -14%; }
-.float--b { top: 44%; right: -12%; animation-delay: -2.5s; color: var(--blue); }
+.float--a { top: 18%; left: -12%; }
+.float--b { top: 50%; right: -10%; animation-delay: -2.5s; color: var(--blue); }
 @keyframes bob { 50% { transform: translateY(-10px); } }
 
 .badge {
@@ -330,9 +337,9 @@ h1, h2, h3, p { margin: 0; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 920px) {
-  .hero { grid-template-columns: 1fr; padding-top: 7rem; gap: 3.5rem; }
+  .hero { grid-template-columns: 1fr; padding-top: 5.5rem; gap: 3.5rem; }
   .hero__visual { order: -1; }
-  .portrait { width: min(78%, 300px); }
+  .portrait { width: min(78%, 320px); margin-top: 6.5rem; }
   .float--a { left: -10%; } .float--b { right: -8%; }
   .about__grid { grid-template-columns: 1fr; gap: 1.5rem; }
   .stats { grid-template-columns: repeat(2, 1fr); }
